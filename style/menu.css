@@ -1,0 +1,36 @@
+.menu{
+  display: flex;
+}
+.foodItem {
+  display: flex;
+  flex-direction: column;
+}
+.foodItem .header{
+  display: flex;
+  flex-direction: row;
+}
+.name{
+  flex: 2;
+}
+.cost{
+  flex: 1;
+}
+.ingredients{
+  display: flex;
+  margin: 2px;
+  padding: 0px;
+  border: 2px solid green;
+  box-shadow: 1px 1px 2px #dddddd;
+  flex-direction:column;
+}
+.ingredients:before{
+  content: "Ingredients";
+  font-weight: bold;
+  background: #00AA00;
+  color: #DDFFDD;
+}
+
+.ingredient, .ingredients:before{
+  flex: 1;
+  padding: 0.5em;
+}
