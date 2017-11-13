@@ -3,20 +3,33 @@
 <head>
   <title>My first Vue app</title>
   <script src="https://unpkg.com/vue"></script>
+  <style>
+    .student-name{
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
-    {{ message }}
+    <div class="student-name">{{ student.lastName }}, {{ student.firstName }}</div>
+    <div class="student-info">Age: {{ student.age }}</div>
   </div>
 
   <script>
 
-    var name = "hal";
+
+
+
+    var students = [{
+      firstName: "Hal",
+      lastName: "Larsson",
+      age: 37,
+    }]
 
     var app = new Vue({
       el: '#app',
       data: {
-        message: function(){ name; },
+        student: students[0],
       }
     })
   </script>
