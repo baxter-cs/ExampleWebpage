@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue To Do Example</title>
+  <script src="https://unpkg.com/vue"></script>
+  <!-- Import Vue from a CDN -->
+  <style>
+    body {
+        background: #A9E6E6;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+      <p>Your Todo List:</p>
+      <ul>
+          <li
+            v-for="item in items"
+            :key="item.itemId"
+          >
+          <!-- Breaking it down w/ Javascript Comments
+          <li
+            // The `li` element that is directely under our `ul` (unordered list) element.
+            v-for="item in items"
+            // Vue lets us loop through js variables.
+            // This loops through the `items` array, and assign the current iteration to the variable `item`.
+            // Every iteration results in another `li` element.
+            :key="item.itemId"
+            // Vue requires that each element created by a v-for loop to have a unique key.
+          >
+          -->
+            <span>
+              {{ item.title }}
+              <!--
+                This sets the value of text to the `title` property of the current item.
+              -->
+              <!--
+                By default, vue uses "delimeters" of ["{{", "}}"].
+                Anything in between them is run as javascript
+              -->
+              <!--
+                You can call a function,
+                return the property value of an object (what we're doing),
+                or do things like `"foo".length`, which will display `3`
+              -->
+            </span>
+            <button @click="removeItem(item.itemId)">Done</button>
+            <!--
+              Vue lets us execute code on events.
+              These can be native DOM events or events emitted by components.
+              In our case, we're using the native DOM event of onClick.
+              So whenever we click that button, removeItem(item.itemId)` is run.
+              Since we're in a loop where `item` is the current item in the loop,
+              clicking that button will call the `removeItem` method with this
+              item's id.
+            -->
+          </li>
+      </ul>
+      <p>Add item:</p>
+      <input type="text" v-model="newItemTitle"/>
+      <!--
+        Vue lets us map javascript variables to inputs with `v-model`.
+        Whenever you type something in this input, the variable
+        `newItemTitle` is automatically updated with the new value.
+        Whenever we programatically change the value of `newItemTitle`
+        it is reflected.
+        For an example, take a look at our method addItem().
+        Whenever it is called, we empty this input field by setting
+        `newItemTitle` to `""`.
+      -->
+      <button @click="addItem">Add to To Do List.</button>
+      <!--
+        Whenever this button is clicked, we run the method `addItem`.
+      -->
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        items: [{ itemId: 1, title: 'Create a new item'}],
+        newItemTitle: '',
+        latestItemId: 1,  // Used to keep track of IDs
+      },
+      methods: {
+        addItem: function () {
+          this.items.push({
+            itemId: this.latestItemId += 1,
+            title: this.newItemTitle
+          })  // Adds the new item to the items array.
+          this.lastestItemId += 1  // Increment our ID counter since we used it in line 90.
+          this.newItemTitle = ""  // Clears the input field.
+        },
+        removeItem: function (itemId) {
+          this.items = this.items.filter((item) => { return item.itemId !== itemId })
+          /*
+            This is using some (ES6/ES 2015/ES Harmony) magic.
+            Let's break down this statement into multiple parts
+            `this.items =``
+            sets the value of the items array to whatever is on the right side of the `=`. No problem there
+
+            `this.items.filter(...)`
+            .filter is a neat method that lets us filter an array.
+            The `filter` method takes in a parameter which is evaluated to a conditional.
+
+            What we can do is pass in a function that is run for every item in the array.
+            That function will in turn have the item we're evaluating passed in as a parameter.
+
+            Let's define an array:
+            `numbers = [1, 2, 3, 4, 5]`
+            And now we want an array only filled with even numbers.
+            This is a perfect use case for the `filter` method.
+
+            First let's define a function that returns true if a given number is even:
+            `function isEven (number) { return number % 2 == 0 }``
+            `isEven(1)` evaluates to false.
+            `isEven(2)` evaluates to true.
+
+            And now let's put it to work
+            `evenNumbers = numbers.filter(isEven)`
+            `console.log(evenNumbers)` would be [2, 4].
+
+            Now let's rewrite this to use an anonymous function.
+
+            `evenNumbers = numbers.filter(function (number) { return number % 2 == 0 })`
+
+            It looks a bit cumbersome since it takes up more space, but it's
+            beneficial because we don't want to clog up our namespace with
+            functions that we'll only use once.
+
+            Now let's use ES6/ES Harmony/ES 2015 Syntax.
+            `function (number) { return number % 2 == 0 }` turns into:
+            `(number) => { return number % 2 == 0 }` so we are left with:
+
+            `evenNumbers = numbers.filter( (number) => { return number % 2 == 0 } )`
+
+            Moving back to the original line of:
+            `this.items = this.items.filter((item) => { return item.itemId !== itemId })`
+
+            `(item) => { return item.itemId !== itemId }` will only return false for
+            the item we want to eliminate
+            (since its itemId will not not equal the itemId we're looking for).
+          */
+        }
+      }
+    })
+  </script>
+</body>
+</html>
